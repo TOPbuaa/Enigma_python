@@ -1,4 +1,5 @@
 from Enigma import *
+import json
 from itertools import permutations
 
 # secret_key='I,II,III,AAA'
@@ -29,13 +30,13 @@ def get_chain_len(wheel,char1,char2,char3):
                 break
         chain_len.append(l)
     chain_len.sort()
+    return chain_len
     # # 遇到问题，list是可变变量，不能作为key
     # # 用tuple或干脆用secret_key做为key，遍历找答案
     # if chain_len in sheet:
     #     sheet[chain_len]=sheet[chain_len].append(key)
     # else:
     #     sheet[chain_len]=[key]
-    sheet[secret_key]=chain_len
 ############################################################################
 
 # 生成表格
@@ -54,12 +55,12 @@ for wheel in list_wheel:
                     secret_key+=wheel[i]+','
                 secret_key+=char1+char2+char3
                 chain_len=get_chain_len(wheel,char1,char2,char3)
-# input
-cl=[9,4,9,4]
-cl.sort()
-for chain_len in sheet.keys():
-    if sheet[chain_len]==cl:
-        print(chain_len)
+                sheet[secret_key]=chain_len
+# 将表格保存到文件
+fpath='sheet.json'
+with open(fpath,'w') as f:
+    f.write(json.dumps(sheet))
+########################################################################################
 
 
 
